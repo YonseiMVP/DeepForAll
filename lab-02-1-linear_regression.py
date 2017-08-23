@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 # Lab 2 Linear Regression
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
+use_gpu = False
 
 # X and Y data
 x_train = [1, 2, 3]
@@ -22,16 +24,32 @@ cost = tf.reduce_mean(tf.square(hypothesis - y_train))
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
 train = optimizer.minimize(cost)
 
-# Launch the graph in a session.
-sess = tf.Session()
-# Initializes global variables in the graph.
+# GPU 사용 여부
+if use_gpu == False:
+    config = tf.ConfigProto(
+    device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
+    )
+elif use_gpu == True:
+    config = tf.ConfigProto(
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
+    )
+# session에 그래프를 올린다. 그리고 그래프의 이름을 sess라고 정하겠다.
+sess = tf.Session(config=config)
+
+# sess 그래프 안 변수들(W, b)에 지정한 random_normal distribution에 맞는 값으로 초기화
 sess.run(tf.global_variables_initializer())
 
 # Fit the line
+# sess.run일 때에만 그래프가 실행, 그래프가 2000회 반복 실행된다.
 for step in range(2001):
     sess.run(train)
+    # 1. train 노드 -> optimizer.minimize(cost) 실행 -> cost 노드와 연결
+    # 2. cost 노드 -> mean square (hypothesis - y_train) -> hypothesis 노드, y_train 노드와 연결
+    # 3. hypothesis 노드 -> x_train 노드, W노드, b노드와 연결
+    # 4. 학습은 cost가 minimize하는 방향으로 변수 W, b를 조절하게 된다.
     if step % 20 == 0:
         print(step, sess.run(cost), sess.run(W), sess.run(b))
+        #해당 step에서의 cost값, W값, b값을 출력
 
 # Learns best fit W:[ 1.],  b:[ 0.]
 
