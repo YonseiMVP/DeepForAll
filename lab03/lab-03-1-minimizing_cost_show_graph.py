@@ -3,15 +3,18 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
+
+# X,Y 값 노드
 X = [1, 2, 3]
 Y = [1, 2, 3]
 
+# 입출력데이터를 넣기 위한 공간 (타입) => 나중에 feed_dict를 이용하여 값을 대입, trainable은 안됨 (여기서 W는 cost그래프를 그리기 위한 x축 값)
 W = tf.placeholder(tf.float32)
 
-# Our hypothesis for linear model X * W
+# hypothesis식을 정의 노드
 hypothesis = X * W
 
-# cost/loss function
+# mean square error 노드
 cost = tf.reduce_mean(tf.square(hypothesis - Y))
 
 # GPU 사용 여부

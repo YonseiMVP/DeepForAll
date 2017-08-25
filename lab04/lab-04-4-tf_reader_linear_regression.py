@@ -4,36 +4,42 @@
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
+# file 크기가 커서 numpy를 써서 올리면 용량이 부족하므로 quene_runners를 통해 파일 로드
+# ([파일1,파일2,...],shuffle,name)
 filename_queue = tf.train.string_input_producer(
     ['data-01-test-score.csv'], shuffle=False, name='filename_queue')
-
+# 변경없이 그대로 사용하면 된다.
 reader = tf.TextLineReader()
 key, value = reader.read(filename_queue)
 
 # Default values, in case of empty columns. Also specifies the type of the
 # decoded result.
+# 읽어온 value 값을 어떻게 이해할지(type등을..)
+#record_defaults 소수점 형태이므로 float
 record_defaults = [[0.], [0.], [0.], [0.]]
 xy = tf.decode_csv(value, record_defaults=record_defaults)
 
-# collect batches of csv in
+# 입력과 출력을 batch 단위로 불러옴
 train_x_batch, train_y_batch = \
     tf.train.batch([xy[0:-1], xy[-1:]], batch_size=10)
 
-# placeholders for a tensor that will be always fed.
+# 입출력데이터를 넣기 위한 공간 (타입, 차원[None = instance 개수에 따라 자동으로 정해짐,feature 갯수를 맞춰주어야함]) => 나중에 feed_dict를 이용하여 값을 대입, trainable은 안됨
 X = tf.placeholder(tf.float32, shape=[None, 3])
 Y = tf.placeholder(tf.float32, shape=[None, 1])
 
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 W = tf.Variable(tf.random_normal([3, 1]), name='weight')
 b = tf.Variable(tf.random_normal([1]), name='bias')
 
-# Hypothesis
+# hypothesis식을 정의 노드
 hypothesis = tf.matmul(X, W) + b
 
-# Simplified cost/loss function
+# mean square error 노드
 cost = tf.reduce_mean(tf.square(hypothesis - Y))
 
-# Minimize
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-5)
+# gradientdescent방법으로 cost를 최소화하는 노드
 train = optimizer.minimize(cost)
 
 # GPU 사용 여부

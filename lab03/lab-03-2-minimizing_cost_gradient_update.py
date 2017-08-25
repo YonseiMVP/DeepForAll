@@ -2,26 +2,29 @@
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
+
+# x_data, y_data 값 노드
 x_data = [1, 2, 3]
 y_data = [1, 2, 3]
 
-# Try to find values for W and b to compute y_data = W * x_data + b
-# We know that W should be 1 and b should be 0
-# But let's use TensorFlow to figure it out
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 W = tf.Variable(tf.random_normal([1]), name='weight')
 
+# 입출력데이터를 넣기 위한 공간 (타입, 차원[None = instance 개수에 따라 자동으로 정해짐]) => 나중에 feed_dict를 이용하여 값을 대입, trainable은 안됨
 X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
 
-# Our hypothesis for linear model X * W
+# hypothesis식을 정의 노드
 hypothesis = X * W
 
-# cost/loss function
+# mean square error 노드
 cost = tf.reduce_mean(tf.square(hypothesis - Y))
 
-# Minimize: Gradient Descent using derivative: W -= learning_rate * derivative
+# gradient 식을 직접 정의하는 코드 부분: W -= learning_rate * derivative
 learning_rate = 0.1
+# gradient 공식에 따라 설정
 gradient = tf.reduce_mean((W * X - Y) * X)
+# 새로운 weight 값을 update에 넣어준 후 assign 함수를 이용하여 weight에 다시 대입 W=W-learning_rate*gradient 와 같은 식으로는 오류남
 descent = W - learning_rate * gradient
 update = W.assign(descent)
 

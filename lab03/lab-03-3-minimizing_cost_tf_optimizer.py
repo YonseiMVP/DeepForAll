@@ -2,21 +2,22 @@
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
-# tf Graph Input
+# X,Y 값 노드
 X = [1, 2, 3]
 Y = [1, 2, 3]
 
-# Set wrong model weights
+# 변수선언(상수로 초기화)노드 => trainable가능한
 W = tf.Variable(5.0)
 
-# Linear model
+# Linear model식을 정의 노드
 hypothesis = X * W
 
-# cost/loss function
+# mean square error 노드
 cost = tf.reduce_mean(tf.square(hypothesis - Y))
 
-# Minimize: Gradient Descent Magic
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.1)
+# gradientdescent방법으로 cost를 최소화하는 노드
 train = optimizer.minimize(cost)
 
 # GPU 사용 여부

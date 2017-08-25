@@ -4,25 +4,25 @@ import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
 
-# X and Y data
+# x_train, y_train 값 노드
 x_train = [1, 2, 3]
 y_train = [1, 2, 3]
 
-# Try to find values for W and b to compute y_data = x_data * W + b
-# We know that W should be 1 and b should be 0
-# But let TensorFlow figure it out
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 W = tf.Variable(tf.random_normal([1]), name='weight')
 b = tf.Variable(tf.random_normal([1]), name='bias')
 
-# Our hypothesis XW+b
+# hypothesis식을 정의 노드
 hypothesis = x_train * W + b
 
-# cost/loss function
+# mean square error 노드
 cost = tf.reduce_mean(tf.square(hypothesis - y_train))
 
-# Minimize
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
+# gradientdescent방법으로 cost를 최소화하는 노드
 train = optimizer.minimize(cost)
+
 
 # GPU 사용 여부
 if use_gpu == False:

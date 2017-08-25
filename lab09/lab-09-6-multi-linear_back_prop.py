@@ -17,38 +17,39 @@ y_data = [[152.],
           [196.],
           [142.]]
 
-# placeholders for a tensor that will be always fed.
+# 입출력데이터를 넣기 위한 공간
 X = tf.placeholder(tf.float32, shape=[None, 3])
 Y = tf.placeholder(tf.float32, shape=[None, 1])
 
-# Set wrong model weights
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 W = tf.Variable(tf.truncated_normal([3, 1]))
 b = tf.Variable(5.)
 
-# Forward prop
+# hypothesis식의 정의 노드 (forward 과정)
 hypothesis = tf.matmul(X, W) + b
 
+# shape을 통해 차원을 확인
 print(hypothesis.shape, Y.shape)
 
-# diff
+# diff는 cost를 미분한 값
 assert hypothesis.shape.as_list() == Y.shape.as_list()
 diff = (hypothesis - Y)
 
-# Back prop (chain rule)
+# backpropagation 과정 (chain rule을 이용함), d_w는 cost를 w로 미분한 값
 d_l1 = diff
 d_b = d_l1
 d_w = tf.matmul(tf.transpose(X), d_l1)
 
 print(X, d_l1, d_w)
 
-# Updating network using gradients
+# gradient descent 이용하여 W값을 변경, assign을 이용하여 W에 새로운 값을 할당
 learning_rate = 1e-6
 step = [
     tf.assign(W, W - learning_rate * d_w),
     tf.assign(b, b - learning_rate * tf.reduce_mean(d_b)),
 ]
 
-# 7. Running and testing the training process
+# mean square error 값을 계산
 RMSE = tf.reduce_mean(tf.square((Y - hypothesis)))
 
 sess = tf.InteractiveSession()

@@ -17,19 +17,22 @@ y_data = [[0],
 
 x_data = np.array(x_data, dtype=np.float32)
 y_data = np.array(y_data, dtype=np.float32)
-
+# 입출력데이터를 넣기 위한 공간
 X = tf.placeholder(tf.float32, [None, 2])
 Y = tf.placeholder(tf.float32, [None, 1])
 
+# 입출력데이터를 넣기 위한 공간
 W1 = tf.Variable(tf.random_normal([2, 2]), name='weight1')
 b1 = tf.Variable(tf.random_normal([2]), name='bias1')
+#l1식의 노드
 l1 = tf.sigmoid(tf.matmul(X, W1) + b1)
 
 W2 = tf.Variable(tf.random_normal([2, 1]), name='weight2')
 b2 = tf.Variable(tf.random_normal([1]), name='bias2')
+#Y_pred 식의 정의 노드, l1이 입력
 Y_pred = tf.sigmoid(tf.matmul(l1, W2) + b2)
 
-# cost/loss function
+# cost 계산 노드
 cost = -tf.reduce_mean(Y * tf.log(Y_pred) + (1 - Y) *
                        tf.log(1 - Y_pred))
 
@@ -40,21 +43,21 @@ cost = -tf.reduce_mean(Y * tf.log(Y_pred) + (1 - Y) *
 #       |      |                   |      |
 #       W1     b1                  W2     b2
 
-# Loss derivative
+# loss 미분 값
 d_Y_pred = (Y_pred - Y) / (Y_pred * (1.0 - Y_pred) + 1e-7)
 
-# Layer 2
+# backpropagation 과정 (loss->sigma 미분순)
 d_sigma2 = Y_pred * (1 - Y_pred)
 d_a2 = d_Y_pred * d_sigma2
 d_p2 = d_a2
 d_b2 = d_a2
 d_W2 = tf.matmul(tf.transpose(l1), d_p2)
 
-# Mean
+
 d_b2_mean = tf.reduce_mean(d_b2, axis=[0])
 d_W2_mean = d_W2 / tf.cast(tf.shape(l1)[0], dtype=tf.float32)
 
-# Layer 1
+# 위와 동일
 d_l1 = tf.matmul(d_p2, tf.transpose(W2))
 d_sigma1 = l1 * (1 - l1)
 d_a1 = d_l1 * d_sigma1
@@ -62,11 +65,11 @@ d_b1 = d_a1
 d_p1 = d_a1
 d_W1 = tf.matmul(tf.transpose(X), d_a1)
 
-# Mean
+
 d_W1_mean = d_W1 / tf.cast(tf.shape(X)[0], dtype=tf.float32)
 d_b1_mean = tf.reduce_mean(d_b1, axis=[0])
 
-# Weight update
+# gradient descent 이용하여 W값을 변경, assign을 이용하여 W에 새로운 값을 할당
 step = [
   tf.assign(W2, W2 - learning_rate * d_W2_mean),
   tf.assign(b2, b2 - learning_rate * d_b2_mean),
@@ -74,8 +77,7 @@ step = [
   tf.assign(b1, b1 - learning_rate * d_b1_mean)
 ]
 
-# Accuracy computation
-# True if hypothesis > 0.5 else False
+#정확도 계산
 predicted = tf.cast(Y_pred > 0.5, dtype=tf.float32)
 accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))
 

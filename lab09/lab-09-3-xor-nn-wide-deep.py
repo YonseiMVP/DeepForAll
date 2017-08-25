@@ -17,34 +17,40 @@ y_data = [[0],
 x_data = np.array(x_data, dtype=np.float32)
 y_data = np.array(y_data, dtype=np.float32)
 
+# 입출력데이터를 넣기 위한 공간
 X = tf.placeholder(tf.float32, [None, 2])
 Y = tf.placeholder(tf.float32, [None, 1])
 
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 W1 = tf.Variable(tf.random_normal([2, 10]), name='weight1')
 b1 = tf.Variable(tf.random_normal([10]), name='bias1')
+# layer1값의 식을 정의 노드
 layer1 = tf.sigmoid(tf.matmul(X, W1) + b1)
 
 W2 = tf.Variable(tf.random_normal([10, 10]), name='weight2')
-b2 = tf.Variable(tf.random_normal([10]), name='bias2')
+b2 = tf.Variable(tf.random_normal([10]), name='bias2')\
+# layer2값의 식을 정의 노드,layer1이 입력
 layer2 = tf.sigmoid(tf.matmul(layer1, W2) + b2)
 
 W3 = tf.Variable(tf.random_normal([10, 10]), name='weight3')
 b3 = tf.Variable(tf.random_normal([10]), name='bias3')
+# layer3값의 식을 정의 노드,layer2이 입력
 layer3 = tf.sigmoid(tf.matmul(layer2, W3) + b3)
 
 W4 = tf.Variable(tf.random_normal([10, 1]), name='weight4')
 b4 = tf.Variable(tf.random_normal([1]), name='bias4')
+# hypothesos값의 식을 정의 노드,layer3이 입력
 hypothesis = tf.sigmoid(tf.matmul(layer3, W4) + b4)
 
-# cost/loss function
+# cross entropy cost 노드
 cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) *
                        tf.log(1 - hypothesis))
-
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드+gradientdescent방법으로 cost를 최소화하는 노드
 train = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
 
-# Accuracy computation
-# True if hypothesis>0.5 else False
+# cast는 if문 hypothesis값이 0.5보다 크면 1 아니면 0
 predicted = tf.cast(hypothesis > 0.5, dtype=tf.float32)
+# 정확도 계산
 accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))
 
 # GPU 사용 여부

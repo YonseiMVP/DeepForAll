@@ -12,20 +12,22 @@ mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 # Check out https://www.tensorflow.org/get_started/mnist/beginners for
 # more information about the mnist dataset
 
-# parameters
+# parameters 설정
 learning_rate = 0.001
 training_epochs = 15
 batch_size = 100
 
-# input place holders
+# mnist input 값을 넣기 위한 공간  28 * 28 = 784
 X = tf.placeholder(tf.float32, [None, 784])
 Y = tf.placeholder(tf.float32, [None, 10])
 
-# dropout (keep_prob) rate  0.7 on training, but should be 1 for testing
+# dropout에서 drop을 안 할 확률 (테스트시에는 1로 모든 값을 사용)
 keep_prob = tf.placeholder(tf.float32)
 
 # weights & bias for nn layers
-# http://stackoverflow.com/questions/33640581/how-to-do-xavier-initialization-on-tensorflow
+# 변수선언(이름,차원,초기화 방법)노드 => trainable가능한, xavier 초기화 방법을 쓰기 위해 tf.get_varibale 라이브러리 사용
+# weight->activation->dropout순으로 사용
+# 마지막 layer에서는 dropout을 사용하지 않는다.(가장 global한 값을 dropout하기에는 학습에 있어 손실이 크다 )
 W1 = tf.get_variable("W1", shape=[784, 512],
                      initializer=tf.contrib.layers.xavier_initializer())
 b1 = tf.Variable(tf.random_normal([512]))
@@ -55,9 +57,10 @@ W5 = tf.get_variable("W5", shape=[512, 10],
 b5 = tf.Variable(tf.random_normal([10]))
 hypothesis = tf.matmul(L4, W5) + b5
 
-# define cost/loss & optimizer
+# softmax+cross entropy error 노드
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
     logits=hypothesis, labels=Y))
+# adamoptimizer방법으로 초기화(학습속도 설정)하는 노드 + adamoptimizer방법으로 cost를 최소화하는 노드
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 # initialize

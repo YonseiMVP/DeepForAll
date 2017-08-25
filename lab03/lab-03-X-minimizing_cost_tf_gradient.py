@@ -3,28 +3,30 @@
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
-# tf Graph Input
+# X,Y 값 노드
 X = [1, 2, 3]
 Y = [1, 2, 3]
 
-# Set wrong model weights
+# 변수선언(상수로 초기화)노드 => trainable가능한
 W = tf.Variable(5.)
 
-# Linear model
+# Linear model식을 정의 노드
 hypothesis = X * W
 
-# Manual gradient
+# gradient 값을 추후 직접 출력하기 위한 노드
 gradient = tf.reduce_mean((W * X - Y) * X) * 2
 
-# cost/loss function
+# # mean square error 노드
 cost = tf.reduce_mean(tf.square(hypothesis - Y))
 
-# Minimize: Gradient Descent Magic
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
+# gradientdescent방법으로 cost를 최소화하는 노드
 train = optimizer.minimize(cost)
 
-# Get gradients
+# cost의 gradient 값을 계산해줌 (customize한 gradient를 설정한다면)
 gvs = optimizer.compute_gradients(cost, [W])
+# gradient를 이용하여 어떻게 weight 수정을 할 것인지 설정
 # Optional: modify gradient if necessary
 # gvs = [(tf.clip_by_value(grad, -1., 1.), var) for grad, var in gvs]
 # Apply gradients

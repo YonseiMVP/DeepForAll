@@ -25,6 +25,7 @@ with tf.name_scope("layer1") as scope:
     b1 = tf.Variable(tf.random_normal([2]), name='bias1')
     layer1 = tf.sigmoid(tf.matmul(X, W1) + b1)
 
+    #
     w1_hist = tf.summary.histogram("weights1", W1)
     b1_hist = tf.summary.histogram("biases1", b1)
     layer1_hist = tf.summary.histogram("layer1", layer1)

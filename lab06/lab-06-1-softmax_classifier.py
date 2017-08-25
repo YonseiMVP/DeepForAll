@@ -2,6 +2,7 @@
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
+# 4개의 feature , 8개의 instance, 차원은 instance x feature = 8 X 4
 x_data = [[1, 2, 1, 1],
           [2, 1, 3, 2],
           [3, 1, 3, 4],
@@ -10,6 +11,7 @@ x_data = [[1, 2, 1, 1],
           [1, 2, 5, 6],
           [1, 6, 6, 6],
           [1, 7, 7, 7]]
+# x_data와 동일한 방식
 y_data = [[0, 0, 1],
           [0, 0, 1],
           [0, 0, 1],
@@ -18,21 +20,22 @@ y_data = [[0, 0, 1],
           [0, 1, 0],
           [1, 0, 0],
           [1, 0, 0]]
-
+# 입출력데이터를 넣기 위한 공간
 X = tf.placeholder("float", [None, 4])
 Y = tf.placeholder("float", [None, 3])
 nb_classes = 3
 
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 W = tf.Variable(tf.random_normal([4, nb_classes]), name='weight')
 b = tf.Variable(tf.random_normal([nb_classes]), name='bias')
 
-# tf.nn.softmax computes softmax activations
-# softmax = exp(logits) / reduce_sum(exp(logits), dim)
+# hypothesis식을 정의 노드 (softmax 함수를 사용)
 hypothesis = tf.nn.softmax(tf.matmul(X, W) + b)
 
-# Cross entropy cost/loss
+# cross entropy error 노드
 cost = tf.reduce_mean(-tf.reduce_sum(Y * tf.log(hypothesis), axis=1))
 
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드+gradientdescent방법으로 cost를 최소화하는 노드
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(cost)
 
 # GPU 사용 여부

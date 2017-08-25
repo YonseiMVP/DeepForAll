@@ -1,21 +1,23 @@
 # From https://www.tensorflow.org/get_started/get_started
 import tensorflow as tf
 use_gpu = False
-# Model parameters
+# 변수선언(초기화를 0.3 상수로 정해줌,종류)노드 => trainable가능한
 W = tf.Variable([.3], tf.float32)
 b = tf.Variable([-.3], tf.float32)
 
-# Model input and output
+# 입출력데이터를 넣기 위한 공간 (타입, 차원[None = instance 개수에 따라 자동으로 정해짐]) => 나중에 feed_dict를 이용하여 값을 대입, trainable은 안됨
 x = tf.placeholder(tf.float32)
 y = tf.placeholder(tf.float32)
 
+# linear_model 식을 정의 노드
 linear_model = x * W + b
 
-# cost/loss function
+# mean square error 노드
 loss = tf.reduce_sum(tf.square(linear_model - y))  # sum of the squares
 
-# optimizer
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드
 optimizer = tf.train.GradientDescentOptimizer(0.01)
+# gradientdescent방법으로 cost를 최소화하는 노드
 train = optimizer.minimize(loss)
 
 # training data

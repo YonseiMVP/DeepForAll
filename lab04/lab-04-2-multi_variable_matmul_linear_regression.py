@@ -2,11 +2,13 @@
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
+# 3개의 feature , 5개의 instance, 차원은 instance x feature = 5 X 3
 x_data = [[73., 80., 75.],
           [93., 88., 93.],
           [89., 91., 90.],
           [96., 98., 100.],
           [73., 66., 70.]]
+# x_data와 동일한 방식
 y_data = [[152.],
           [185.],
           [180.],
@@ -14,21 +16,23 @@ y_data = [[152.],
           [142.]]
 
 
-# placeholders for a tensor that will be always fed.
+# 입출력데이터를 넣기 위한 공간 (타입, 차원[None = instance 개수에 따라 자동으로 정해짐,feature 갯수를 맞춰주어야함]) => 나중에 feed_dict를 이용하여 값을 대입, trainable은 안됨
 X = tf.placeholder(tf.float32, shape=[None, 3])
 Y = tf.placeholder(tf.float32, shape=[None, 1])
 
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 W = tf.Variable(tf.random_normal([3, 1]), name='weight')
 b = tf.Variable(tf.random_normal([1]), name='bias')
 
-# Hypothesis
+# hypothesis식을 정의 노드, tf.matmul은 텐서의 행렬곱 라이브러리 X=5x3, W=3x1
 hypothesis = tf.matmul(X, W) + b
 
-# Simplified cost/loss function
+# mean square error 노드
 cost = tf.reduce_mean(tf.square(hypothesis - Y))
 
-# Minimize
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-5)
+# gradientdescent방법으로 cost를 최소화하는 노드
 train = optimizer.minimize(cost)
 
 # GPU 사용 여부

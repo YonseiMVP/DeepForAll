@@ -1,38 +1,45 @@
 # Lab 7 Learning rate and Evaluation
 import tensorflow as tf
 import random
+import matplotlib.pyplot as mlp
 # import matplotlib.pyplot as plt
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
 
+#tensorflow에서 mnist 다운을 받음
 from tensorflow.examples.tutorials.mnist import input_data
 # Check out https://www.tensorflow.org/get_started/mnist/beginners for
 # more information about the mnist dataset
+#mnist 데이터를 불러옴 (nmist의 label값을 one_hot코드로 불러옴)
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
 nb_classes = 10
 
-# MNIST data image of shape 28 * 28 = 784
+# mnist input 값을 넣기 위한 공간  28 * 28 = 784
 X = tf.placeholder(tf.float32, [None, 784])
-# 0 - 9 digits recognition = 10 classes
+# Label값은 0 - 9 숫자이므로 총 10개의 class
 Y = tf.placeholder(tf.float32, [None, nb_classes])
 
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 W = tf.Variable(tf.random_normal([784, nb_classes]))
 b = tf.Variable(tf.random_normal([nb_classes]))
 
-# Hypothesis (using softmax)
+# hypothesis식을 정의 노드
 hypothesis = tf.nn.softmax(tf.matmul(X, W) + b)
 
+# cross entropy error 노드
 cost = tf.reduce_mean(-tf.reduce_sum(Y * tf.log(hypothesis), axis=1))
+
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드+gradientdescent방법으로 cost를 최소화하는 노드
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(cost)
 
-# Test model
+# 출력값과 라벨값을 비교함, 같으면 1 다르면 0
 is_correct = tf.equal(tf.arg_max(hypothesis, 1), tf.arg_max(Y, 1))
-# Calculate accuracy
+# 정확도 계산
 accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
 
 # parameters
-training_epochs = 15
+training_epochs = 60
 batch_size = 100
 # GPU 사용 여부
 if use_gpu == False:

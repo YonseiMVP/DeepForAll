@@ -2,32 +2,36 @@
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
+# x1,x2,x3은 각 feature에 해당, 5개는 instance
 x1_data = [73., 93., 89., 96., 73.]
 x2_data = [80., 88., 91., 98., 66.]
 x3_data = [75., 93., 90., 100., 70.]
-
+#출력값
 y_data = [152., 185., 180., 196., 142.]
 
-# placeholders for a tensor that will be always fed.
+# 입출력데이터를 넣기 위한 공간 (타입, 차원[None = instance 개수에 따라 자동으로 정해짐]) => 나중에 feed_dict를 이용하여 값을 대입, trainable은 안됨
 x1 = tf.placeholder(tf.float32)
 x2 = tf.placeholder(tf.float32)
 x3 = tf.placeholder(tf.float32)
 
 Y = tf.placeholder(tf.float32)
 
+# 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
 w1 = tf.Variable(tf.random_normal([1]), name='weight1')
 w2 = tf.Variable(tf.random_normal([1]), name='weight2')
 w3 = tf.Variable(tf.random_normal([1]), name='weight3')
 b = tf.Variable(tf.random_normal([1]), name='bias')
 
+# hypothesis식을 정의 노드
 hypothesis = x1 * w1 + x2 * w2 + x3 * w3 + b
 print(hypothesis)
 
-# cost/loss function
+# mean square error 노드
 cost = tf.reduce_mean(tf.square(hypothesis - Y))
 
-# Minimize. Need a very small learning rate for this data set
+# gradientdescent방법으로 초기화(학습속도 설정)하는 노드
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-5)
+# gradientdescent방법으로 cost를 최소화하는 노드
 train = optimizer.minimize(cost)
 
 # GPU 사용 여부
