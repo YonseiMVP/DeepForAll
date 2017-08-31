@@ -1,4 +1,16 @@
-ï»¿
-# DeepLearning for All using Tensorflow : MVP LAB
 
-MVPLab íŠœí† ë¦¬ì–¼ ìë£Œ
+# ¡ºDeepLearning for All using Tensorflow : MVP LAB¡»
+
+ÀÌ ÀúÀå¼Ò´Â MVPLab Æ©Åä¸®¾ó ÀÚ·áÀÔ´Ï´Ù.
+
+---
+## ½ÃÁğ 1 - µö·¯´×ÀÇ ±âº»
+* ¼ö¾÷¿¡ »ç¿ëÇÏ´Â ÄÚµå 
+* ¼ö¾÷ÀÇ °³¿ä
+* ¸Ó½Å·¯´×ÀÇ °³³ä°ú ¿ë¾î
+* Linear  RegressionÀÇ °³³ä
+* Linear Regression costÇÔ¼ö ÃÖ¼ÒÈ­
+* ¿©·¯°³ÀÇ ÀÔ·Â(feature)ÀÇ Linear Regression
+* Logistic (Regression) Classification
+  *  
+---
