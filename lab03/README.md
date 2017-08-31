@@ -1,7 +1,7 @@
 
 # 3. Minimizing Cost
 
-이 코드들은 TensorFlow로 linear regression의 cost를 최소화하는 방법을 구현하였습니다.
+##이 코드들은 TensorFlow로 linear regression의 cost를 최소화하는 방법을 구현하였습니다.
 ---
 ## 3.1 lab-03-1-minimizing_cost_show_graph.py
 
