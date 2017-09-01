@@ -1,7 +1,7 @@
 
 # 『DeepLearning for All using Tensorflow : MVP LAB』
 
-이 저장소는 MVPLab 튜토리얼 자료입니다.
+이 저장소는 MVPLab 튜토리얼 자료입니다. 
 
 ## Reference
 
@@ -13,7 +13,7 @@
 ### lab01 - TensorFlow Basics
 - TensorFlow의 설치 및 기본적인 operations
 ---
-### lab02 - Linear Regression
+### lab02 - [Linear Regression](https://github.com/YonseiMVP/DeepForAll/tree/master/lab02)
 - TensorFlow로 간단한 linear regression을 구현
 ---
 ### lab03 -Minimizing Cost
