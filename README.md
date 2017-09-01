@@ -48,3 +48,10 @@
 - MNIST 99% with CNN
 - CNN class, Layers, Ensemble
 ---
+### lab12 - RNN
+- RNN - Basics
+- RNN - Hi Hello Training
+- Long Sequence RNN
+- Stacked RNN + Softmax Layer
+- Dynamic RNN
+- RNN with Time Series Data
