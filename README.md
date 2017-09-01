@@ -7,9 +7,8 @@
 
 [https://hunkim.github.io/ml/](https://hunkim.github.io/ml/) - 모두를 위한 딥러닝
 
----
 ## 시즌 1 - 딥러닝의 기본 실습 자료
----
+
 ### lab01 - [TensorFlow Basics](https://github.com/YonseiMVP/DeepForAll/tree/master/lab01)
 - TensorFlow의 설치 및 기본적인 operations
 ---
