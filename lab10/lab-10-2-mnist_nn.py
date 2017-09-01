@@ -42,12 +42,21 @@ cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
 # adamoptimizer방법으로 초기화(학습속도 설정)하는 노드 + adamoptimizer방법으로 cost를 최소화하는 노드
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
-# initialize
-sess = tf.Session()
+# GPU 사용 여부
+if use_gpu == False:
+    config = tf.ConfigProto(
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
+    )
+elif use_gpu == True:
+    config = tf.ConfigProto(
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
+    )
+sess = tf.Session(config=config)
 sess.run(tf.global_variables_initializer())
 
 # train my model
-for epoch in range(training_epochs):
+# 계층이 늘어나도 session을 실행하여 train하는 과정은 같다.
+for epoch in range(training_epochs): # 10.1과 마찬가지로 15회 반복
     avg_cost = 0
     total_batch = int(mnist.train.num_examples / batch_size)
 
@@ -62,9 +71,11 @@ for epoch in range(training_epochs):
 print('Learning Finished!')
 
 # Test model and check accuracy
-correct_prediction = tf.equal(tf.argmax(hypothesis, 1), tf.argmax(Y, 1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-print('Accuracy:', sess.run(accuracy, feed_dict={
+correct_prediction = tf.equal(tf.argmax(hypothesis, 1), tf.argmax(Y, 1))    #tf.equal -> return 1 or 0
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))  #tf.cast -> 1, 0 -> return True, False
+# Test model 노드 설정 끝
+
+print('Accuracy:', sess.run(accuracy, feed_dict={   #sess.run을 통해 accuracy 실행
       X: mnist.test.images, Y: mnist.test.labels}))
 
 # Get one and predict
@@ -73,26 +84,7 @@ print("Label: ", sess.run(tf.argmax(mnist.test.labels[r:r + 1], 1)))
 print("Prediction: ", sess.run(
     tf.argmax(hypothesis, 1), feed_dict={X: mnist.test.images[r:r + 1]}))
 
+# 아래는 이미지 확인하는 방법! OpenCV를 사용하는 방법도 있다.
 # plt.imshow(mnist.test.images[r:r + 1].
 #           reshape(28, 28), cmap='Greys', interpolation='nearest')
 # plt.show()
-
-'''
-Epoch: 0001 cost = 141.207671860
-Epoch: 0002 cost = 38.788445864
-Epoch: 0003 cost = 23.977515479
-Epoch: 0004 cost = 16.315132428
-Epoch: 0005 cost = 11.702554882
-Epoch: 0006 cost = 8.573139748
-Epoch: 0007 cost = 6.370995680
-Epoch: 0008 cost = 4.537178684
-Epoch: 0009 cost = 3.216900532
-Epoch: 0010 cost = 2.329708954
-Epoch: 0011 cost = 1.715552875
-Epoch: 0012 cost = 1.189857912
-Epoch: 0013 cost = 0.820965160
-Epoch: 0014 cost = 0.624131458
-Epoch: 0015 cost = 0.454633765
-Learning Finished!
-Accuracy: 0.9455
-'''

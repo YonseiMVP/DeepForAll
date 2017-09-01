@@ -49,31 +49,13 @@ with tf.Session(config=config) as sess:
     # sess 그래프 안 변수들(W, b)에 지정한 random_normal distribution에 맞는 값으로 초기화 된다.
     sess.run(tf.global_variables_initializer())
 
-    for step in range(10001):
+    for step in range(10001):   # 10001회 실행
         cost_val, _ = sess.run([cost, train], feed_dict={X: x_data, Y: y_data})
-        if step % 200 == 0:
+        if step % 200 == 0: #200회마다 cost값 출력
             print(step, cost_val)
 
     # Accuracy report
+    # 성능 평가
     h, c, a = sess.run([hypothesis, predicted, accuracy],
                        feed_dict={X: x_data, Y: y_data})
     print("\nHypothesis: ", h, "\nCorrect (Y): ", c, "\nAccuracy: ", a)
-
-'''
-0 0.82794
-200 0.755181
-400 0.726355
-600 0.705179
-800 0.686631
-...
-9600 0.492056
-9800 0.491396
-10000 0.490767
-
-...
-
- [ 1.]
- [ 1.]
- [ 1.]]
-Accuracy:  0.762846
-'''

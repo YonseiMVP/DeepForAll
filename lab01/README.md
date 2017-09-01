@@ -1,4 +1,8 @@
-ï»¿
-# DeepLearning for All using Tensorflow : MVP LAB
 
-MVPLab íŠœí† ë¦¬ì–¼ ìë£Œ
+# 1. TensorFlow Basics
+
+---
+
+## 1.1 lab-01-basics.ipynb
+
+ÀÌ ÄÚµå´Â jupyter notebook Çü½ÄÀ¸·Î ÀÛ¼ºµÇ¾úÀ¸¸ç TensorFlow°¡ ¾î¶°ÇÑ °ÍÀÎÁö¿¡ ´ëÇÑ ±âº»ÀûÀÎ ³»¿ëÀ» ´ã°í ÀÖ½À´Ï´Ù.

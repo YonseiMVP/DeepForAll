@@ -22,6 +22,7 @@ X = tf.placeholder(tf.float32, [None, 2])
 Y = tf.placeholder(tf.float32, [None, 1])
 
 # 변수선언(초기화 방법(차원),종류)노드 => trainable가능한
+# 단층 perceptron 구조
 W = tf.Variable(tf.random_normal([2, 1]), name='weight')
 b = tf.Variable(tf.random_normal([1]), name='bias')
 
@@ -53,8 +54,8 @@ with tf.Session(config=config) as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
 
-    for step in range(10001):
-        sess.run(train, feed_dict={X: x_data, Y: y_data})
+    for step in range(10001):   # 10000회 학습
+        sess.run(train, feed_dict={X: x_data, Y: y_data})   # train에 XOR 입출력 x_data, y_data 집어 넣는다. (NN이 아니다!)
         if step % 100 == 0:
             print(step, sess.run(cost, feed_dict={
                   X: x_data, Y: y_data}), sess.run(W))
@@ -63,7 +64,6 @@ with tf.Session(config=config) as sess:
     h, c, a = sess.run([hypothesis, predicted, accuracy],
                        feed_dict={X: x_data, Y: y_data})
     print("\nHypothesis: ", h, "\nCorrect: ", c, "\nAccuracy: ", a)
-
 '''
 Hypothesis:  [[ 0.5]
  [ 0.5]

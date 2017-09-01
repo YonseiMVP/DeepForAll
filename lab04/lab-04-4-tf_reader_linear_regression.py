@@ -21,7 +21,7 @@ xy = tf.decode_csv(value, record_defaults=record_defaults)
 
 # 입력과 출력을 batch 단위로 불러옴
 train_x_batch, train_y_batch = \
-    tf.train.batch([xy[0:-1], xy[-1:]], batch_size=10)
+    tf.train.batch([xy[0:-1], xy[-1:]], batch_size=10) #[x_data(전체에서 마지막 것만 빼고), y_data(마지막 것만)]
 
 # 입출력데이터를 넣기 위한 공간 (타입, 차원[None = instance 개수에 따라 자동으로 정해짐,feature 갯수를 맞춰주어야함]) => 나중에 feed_dict를 이용하여 값을 대입, trainable은 안됨
 X = tf.placeholder(tf.float32, shape=[None, 3])
@@ -58,16 +58,20 @@ sess = tf.Session(config=config)
 sess.run(tf.global_variables_initializer())
 
 # Start populating the filename queue.
+# 통상적인 부분, 관리는 tensorflow가 알아서 해준다.
 coord = tf.train.Coordinator()
 threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
 for step in range(2001):
     x_batch, y_batch = sess.run([train_x_batch, train_y_batch])
+    # sess.run([train_x_batch, train_y_batch])를 실행하면 batch size만큼 읽어서 그 값을 x_batch, y_batch에 전달
     cost_val, hy_val, _ = sess.run(
         [cost, hypothesis, train], feed_dict={X: x_batch, Y: y_batch})
+    #batch data를 전달
     if step % 10 == 0:
         print(step, "Cost: ", cost_val, "\nPrediction:\n", hy_val)
 
+# 끝났을 때 사용
 coord.request_stop()
 coord.join(threads)
 
@@ -77,10 +81,3 @@ print("Your score will be ",
 
 print("Other scores will be ",
       sess.run(hypothesis, feed_dict={X: [[60, 70, 110], [90, 100, 80]]}))
-
-'''
-Your score will be  [[ 177.78144836]]
-Other scores will be  [[ 141.10997009]
- [ 191.17378235]]
-
-'''

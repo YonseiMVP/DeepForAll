@@ -42,16 +42,3 @@ for step in range(100):
     # 1. train -> optimizer.minimize(cost) : GradientDescentOptimize을 이용 하여 cost를 minimize하는 방향으로 cost를 조정
     # 2. cost -> tf.reduce_mean(tf.square(hypothesis - Y)) : hypothesis - Y의 제곱의 합의 평균 을 최소화 하는 방향으로 hypothesis - Y(feed_dict)를 조정
     # 3. hypothesis -> X(feed_dict) * W에서 X * W - Y를 cost가 minimize하도록 값을 update, 즉 W 값을 train한다.
-
-'''
-0 5.0
-1 1.26667
-2 1.01778
-3 1.00119
-4 1.00008
-...
-96 1.0
-97 1.0
-98 1.0
-99 1.0
-'''

@@ -5,7 +5,7 @@
 
 ## Reference
 
-[https://hunkim.github.io/ml/](https://hunkim.github.io/ml/)
+[https://hunkim.github.io/ml/](https://hunkim.github.io/ml/) - ¸ðµÎ¸¦ À§ÇÑ µö·¯´×
 
 ---
 ## ½ÃÁð 1 - µö·¯´×ÀÇ ±âº» ½Ç½À ÀÚ·á

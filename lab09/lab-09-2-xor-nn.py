@@ -55,11 +55,12 @@ with tf.Session(config=config) as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
 
-    for step in range(10001):
+    for step in range(10001):   # 9-1 단층 perceptron, 9-2 다층 perceptron (2층 퍼셉트론)
+        # Neural Network
         sess.run(train, feed_dict={X: x_data, Y: y_data})
         if step % 100 == 0:
             print(step, sess.run(cost, feed_dict={
-                  X: x_data, Y: y_data}), sess.run([W1, W2]))
+                  X: x_data, Y: y_data}), sess.run([W1, W2]))   #step, cost, W1, W2 값을 출력
 
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],

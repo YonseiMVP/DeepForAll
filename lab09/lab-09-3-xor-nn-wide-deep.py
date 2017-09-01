@@ -66,8 +66,8 @@ with tf.Session(config=config) as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
 
-    for step in range(10001):
-        sess.run(train, feed_dict={X: x_data, Y: y_data})
+    for step in range(10001):   # 9-3 4층 구조
+        sess.run(train, feed_dict={X: x_data, Y: y_data})   # train
         if step % 100 == 0:
             print(step, sess.run(cost, feed_dict={
                   X: x_data, Y: y_data}), sess.run([W1, W2]))

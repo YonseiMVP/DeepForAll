@@ -50,21 +50,16 @@ sess = tf.Session(config=config)
 sess.run(tf.global_variables_initializer())
 
 for step in range(2001):
+    # placeholder에 값을 넣어주고 cost, hypothesis 값을 cost_val, hy_val에 저장
     cost_val, hy_val, _ = sess.run(
         [cost, hypothesis, train], feed_dict={X: x_data, Y: y_data})
-    if step % 10 == 0:
+    if step % 10 == 0:#10회당 cost, prediction값 출력)
         print(step, "Cost: ", cost_val, "\nPrediction:\n", hy_val)
 
 # Ask my score
+# W와 b가 알맞게 조정된 hypothesis에 아래의 X 값을 넣어주어 값을 확인한다. Test Result
 print("Your score will be ", sess.run(
     hypothesis, feed_dict={X: [[100, 70, 101]]}))
-
+# X에 다른 값을 집어 넣었을 때도 예측 값을 확인한다.
 print("Other scores will be ", sess.run(hypothesis,
                                         feed_dict={X: [[60, 70, 110], [90, 100, 80]]}))
-
-'''
-Your score will be  [[ 181.73277283]]
-Other scores will be  [[ 145.86265564]
- [ 187.23129272]]
-
-'''

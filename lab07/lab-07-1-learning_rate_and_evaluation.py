@@ -46,7 +46,7 @@ cost = tf.reduce_mean(-tf.reduce_sum(Y * tf.log(hypothesis), axis=1))
 
 # gradientdescent방법으로 초기화(학습속도 설정)하는 노드+gradientdescent방법으로 cost를 최소화하는 노드
 optimizer = tf.train.GradientDescentOptimizer(
-    learning_rate=1e-10).minimize(cost)
+    learning_rate=1.5).minimize(cost) # <- 여기서 learning_rate를 수정하며 결과를 확인해보자! 1.5, 1e-10, 1e-1
 
 # hypothesis의 각 행에서 가장 큰 인덱스 값을 출력 노드
 prediction = tf.arg_max(hypothesis, 1)
@@ -58,7 +58,7 @@ accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
 # GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
@@ -68,10 +68,12 @@ with tf.Session(config=config) as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
 
+    # 학습 시작
     for step in range(201):
         cost_val, W_val, _ = sess.run(
             [cost, W, optimizer], feed_dict={X: x_data, Y: y_data})
         print(step, cost_val, W_val)
+    # 학습 끝
 
     # predict
     print("Prediction:", sess.run(prediction, feed_dict={X: x_test}))

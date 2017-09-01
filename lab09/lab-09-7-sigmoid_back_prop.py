@@ -117,19 +117,19 @@ prediction = tf.argmax(y_pred, 1)
 acct_mat = tf.equal(tf.argmax(y_pred, 1), tf.argmax(target, 1))
 acct_res = tf.reduce_mean(tf.cast(acct_mat, tf.float32))
 
-# Launch graph
+# GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # uncomment this line to force CPU
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
-        device_count={'GPU': 1}  # uncomment this line to force CPU
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
     )
 with tf.Session(config=config) as sess:
     sess.run(tf.global_variables_initializer())
 
-    for step in range(500):
+    for step in range(500): #training w9th backprop
         sess.run(train_step, feed_dict={X: X_data, y: y_data})
 
         if step % 10 == 0:
@@ -140,26 +140,8 @@ with tf.Session(config=config) as sess:
                 step, step_loss, acc))
 
     # Let's see if we can predict
+    # Prediction 결과 확인하기
     pred = sess.run(prediction, feed_dict={X: X_data})
-    for p, y in zip(pred, y_data):
+    for p, y in zip(pred, y_data): # p, y의 인수들을 병렬로 순서대로 나열
         msg = "[{}]\t Prediction: {:d}\t True y: {:d}"
         print(msg.format(p == int(y[0]), p, int(y[0])))
-
-"""
-Output Example
-
-Step:     0      Loss:  453.74799        Acc: 38.61%
-Step:    20      Loss:   95.05664        Acc: 88.12%
-Step:    40      Loss:   66.43570        Acc: 93.07%
-Step:    60      Loss:   53.09288        Acc: 94.06%
-...
-Step:   290      Loss:   18.72972        Acc: 100.00%
-Step:   300      Loss:   18.24953        Acc: 100.00%
-Step:   310      Loss:   17.79592        Acc: 100.00%
-...
-[True]   Prediction: 0   True y: 0
-[True]   Prediction: 0   True y: 0
-[True]   Prediction: 3   True y: 3
-[True]   Prediction: 0   True y: 0
-...
-"""

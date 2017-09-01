@@ -81,24 +81,24 @@ step = [
 predicted = tf.cast(Y_pred > 0.5, dtype=tf.float32)
 accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))
 
-# Launch graph
+# GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # uncomment this line to force CPU
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
-        device_count={'GPU': 1}  # uncomment this line to force CPU
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
     )
 with tf.Session(config=config) as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
 
-    print("shape", sess.run(tf.shape(X)[0], feed_dict={X: x_data}))
+    print("shape", sess.run(tf.shape(X)[0], feed_dict={X: x_data})) #X의 shape 4 출력 : instance가 4개
 
 
     for i in range(10001):
-        sess.run([step, cost], feed_dict={X: x_data, Y: y_data})
+        sess.run([step, cost], feed_dict={X: x_data, Y: y_data})    #training
         if i % 1000 == 0:
             print(i, sess.run([cost, d_W1], feed_dict={
                   X: x_data, Y: y_data}), sess.run([W1, W2]))
@@ -107,16 +107,3 @@ with tf.Session(config=config) as sess:
     h, c, a = sess.run([Y_pred, predicted, accuracy],
                        feed_dict={X: x_data, Y: y_data})
     print("\nHypothesis: ", h, "\nCorrect: ", c, "\nAccuracy: ", a)
-
-
-'''
-Hypothesis:  [[ 0.01338224]
- [ 0.98166382]
- [ 0.98809403]
- [ 0.01135806]]
-Correct:  [[ 0.]
- [ 1.]
- [ 1.]
- [ 0.]]
-Accuracy:  1.0
-'''

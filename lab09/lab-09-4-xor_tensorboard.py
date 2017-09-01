@@ -1,4 +1,4 @@
-# Lab 9 XOR
+0# Lab 9 XOR
 import tensorflow as tf
 import numpy as np
 

@@ -51,42 +51,8 @@ sess = tf.Session(config=config)
 sess.run(tf.global_variables_initializer())
 
 for step in range(2001):
+    # placeholder에 값을 넣어주고 cost, hypothesis 값을 cost_val, hy_val에 저장
     cost_val, hy_val, _ = sess.run(
         [cost, hypothesis, train], feed_dict={X: x_data, Y: y_data})
-    if step % 10 == 0:
+    if step % 10 == 0:  #10회당 cost, prediction값 출력)
         print(step, "Cost: ", cost_val, "\nPrediction:\n", hy_val)
-
-'''
-0 Cost:  7105.46
-Prediction:
- [[ 80.82241058]
- [ 92.26364136]
- [ 93.70250702]
- [ 98.09217834]
- [ 72.51759338]]
-10 Cost:  5.89726
-Prediction:
- [[ 155.35159302]
- [ 181.85691833]
- [ 181.97254944]
- [ 194.21760559]
- [ 140.85707092]]
-
-...
-
-1990 Cost:  3.18588
-Prediction:
- [[ 154.36352539]
- [ 182.94833374]
- [ 181.85189819]
- [ 194.35585022]
- [ 142.03240967]]
-2000 Cost:  3.1781
-Prediction:
- [[ 154.35881042]
- [ 182.95147705]
- [ 181.85035706]
- [ 194.35533142]
- [ 142.036026  ]]
-
-'''

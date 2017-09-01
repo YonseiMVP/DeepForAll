@@ -52,7 +52,7 @@ with tf.Session(config=config) as sess:
 
     for step in range(2001):
         sess.run(optimizer, feed_dict={X: x_data, Y: y_data})
-        if step % 200 == 0:
+        if step % 200 == 0: # 200회마다 cost 값 출력
             print(step, sess.run(cost, feed_dict={X: x_data, Y: y_data}))
 
     print('--------------')
@@ -60,7 +60,7 @@ with tf.Session(config=config) as sess:
     # Testing & One-hot encoding
     a = sess.run(hypothesis, feed_dict={X: [[1, 11, 7, 9]]})
     print(a, sess.run(tf.arg_max(a, 1)))
-
+    # 학습된 모델에 Test 데이터를 넣고 arg_max로 가장 큰 값의 index를 얻는다.
     print('--------------')
 
     b = sess.run(hypothesis, feed_dict={X: [[1, 3, 4, 3]]})
@@ -73,6 +73,7 @@ with tf.Session(config=config) as sess:
 
     print('--------------')
 
+    #한번에 데이터를 입력하여 모두 볼 수 있다.
     all = sess.run(hypothesis, feed_dict={
                    X: [[1, 11, 7, 9], [1, 3, 4, 3], [1, 1, 0, 1]]})
     print(all, sess.run(tf.arg_max(all, 1)))

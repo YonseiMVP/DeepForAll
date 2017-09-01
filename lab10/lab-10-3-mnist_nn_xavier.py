@@ -26,7 +26,7 @@ W1 = tf.get_variable("W1", shape=[784, 256],
                      initializer=tf.contrib.layers.xavier_initializer())
 b1 = tf.Variable(tf.random_normal([256]))
 # L1식 정의 노드 (relu 함수 사용)
-L1 = tf.nn.relu(tf.matmul(X, W1) + b1)
+L1 = tf.nn.relu(tf.matmul(X, W1) + b1)  #relu로 유효 값을 다음 노드에 넘겨준다.
 
 W2 = tf.get_variable("W2", shape=[256, 256],
                      initializer=tf.contrib.layers.xavier_initializer())
@@ -36,7 +36,7 @@ L2 = tf.nn.relu(tf.matmul(L1, W2) + b2)
 W3 = tf.get_variable("W3", shape=[256, 10],
                      initializer=tf.contrib.layers.xavier_initializer())
 b3 = tf.Variable(tf.random_normal([10]))
-hypothesis = tf.matmul(L2, W3) + b3
+hypothesis = tf.matmul(L2, W3) + b3 # 마지막은 relu사용X
 
 # softmax+cross entropy error 노드
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
@@ -45,14 +45,14 @@ cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
 # adamoptimizer방법으로 초기화(학습속도 설정)하는 노드 + adamoptimizer방법으로 cost를 최소화하는 노드
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
-# initialize
+# GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # uncomment this line to force CPU
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
-        device_count={'GPU': 1}  # uncomment this line to force CPU
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
     )
 sess = tf.Session(config=config)
 sess.run(tf.global_variables_initializer())
@@ -87,23 +87,3 @@ print("Prediction: ", sess.run(
 # plt.imshow(mnist.test.images[r:r + 1].
 #           reshape(28, 28), cmap='Greys', interpolation='nearest')
 # plt.show()
-
-'''
-Epoch: 0001 cost = 0.301498963
-Epoch: 0002 cost = 0.107252513
-Epoch: 0003 cost = 0.064888892
-Epoch: 0004 cost = 0.044463030
-Epoch: 0005 cost = 0.029951642
-Epoch: 0006 cost = 0.020663404
-Epoch: 0007 cost = 0.015853033
-Epoch: 0008 cost = 0.011764387
-Epoch: 0009 cost = 0.008598264
-Epoch: 0010 cost = 0.007383116
-Epoch: 0011 cost = 0.006839140
-Epoch: 0012 cost = 0.004672963
-Epoch: 0013 cost = 0.003979437
-Epoch: 0014 cost = 0.002714260
-Epoch: 0015 cost = 0.004707661
-Learning Finished!
-Accuracy: 0.9783
-'''

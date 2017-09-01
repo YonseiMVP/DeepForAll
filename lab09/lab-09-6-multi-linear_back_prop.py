@@ -6,6 +6,7 @@ import tensorflow as tf
 tf.set_random_seed(777)  # reproducibility
 use_gpu = False
 # tf Graph Input
+# 9-5 -> feature 1개 9-6 -> feature 3개(multi)
 x_data = [[73., 80., 75.],
           [93., 88., 93.],
           [89., 91., 90.],
@@ -56,7 +57,7 @@ sess = tf.InteractiveSession()
 init = tf.global_variables_initializer()
 sess.run(init)
 
-for i in range(10000):
+for i in range(10000):  # 9-5와 동일
     print(i, sess.run([step, RMSE], feed_dict={X: x_data, Y: y_data}))
 
 print(sess.run(hypothesis, feed_dict={X: x_data}))

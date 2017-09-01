@@ -44,14 +44,14 @@ optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(cost)
 
 # hypothesis의 각 행에서 가장 큰 인덱스 값을 출력
 prediction = tf.argmax(hypothesis, 1)
-## tf.equal은 두 인수가 같으면 1 아니면 0을 출력
+## tf.equal은 두 인수가 같으면 1 아니면 0을 출력 (True, False)
 correct_prediction = tf.equal(prediction, tf.argmax(Y_one_hot, 1))
-# 정확도 계산
+# 정확도 계산 (tf.cast는 True, False를 1, 0으로 변환)
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 # GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
@@ -61,17 +61,18 @@ with tf.Session(config=config) as sess:
     sess.run(tf.global_variables_initializer())
 
     for step in range(2000):
-        sess.run(optimizer, feed_dict={X: x_data, Y: y_data})
+        sess.run(optimizer, feed_dict={X: x_data, Y: y_data})   # 그래프에 x_data, y_data를 feed 후 optimizer 실행
         if step % 100 == 0:
             loss, acc = sess.run([cost, accuracy], feed_dict={
                                  X: x_data, Y: y_data})
-            print("Step: {:5}\tLoss: {:.3f}\tAcc: {:.2%}".format(
+            # 100회마다 loss에 cost값, acc에 accuracy 값을 입력
+            print("Step: {:5}\tLoss: {:.3f}\tAcc: {:.2%}".format(   # .format으로 {}마다 값을 넣어줄 수 있다.
                 step, loss, acc))
 
     # Let's see if we can predict
     pred = sess.run(prediction, feed_dict={X: x_data})
     # y_data: (N,1) = flatten => (N, ) matches pred.shape
-    for p, y in zip(pred, y_data.flatten()):
+    for p, y in zip(pred, y_data.flatten()):    # zip은 여러개 list를 slice할 때 사용(김밥처럼)
         print("[{}] Prediction: {} True Y: {}".format(p == int(y), p, int(y)))
 
 '''

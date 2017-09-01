@@ -41,10 +41,11 @@ accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
 # parameters
 training_epochs = 60
 batch_size = 100
+
 # GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
@@ -54,17 +55,17 @@ with tf.Session(config=config) as sess:
     # Initialize TensorFlow variables
     sess.run(tf.global_variables_initializer())
     # Training cycle
-    for epoch in range(training_epochs):
+    for epoch in range(training_epochs): # 총 60회
         avg_cost = 0
-        total_batch = int(mnist.train.num_examples / batch_size)
+        total_batch = int(mnist.train.num_examples / batch_size)    # train example 갯수 / batch_size만큼의 값
 
-        for i in range(total_batch):
-            batch_xs, batch_ys = mnist.train.next_batch(batch_size)
-            c, _ = sess.run([cost, optimizer], feed_dict={
+        for i in range(total_batch):    # total batch 만큼 반복
+            batch_xs, batch_ys = mnist.train.next_batch(batch_size) #batch size만큼 batch_xs, ys에 불러온다.
+            c, _ = sess.run([cost, optimizer], feed_dict={  # c에 cost 저장, optimizer은 값을 저장하지 않는다.
                             X: batch_xs, Y: batch_ys})
-            avg_cost += c / total_batch
+            avg_cost += c / total_batch # 1회 epoch의 cost 값을 avg_cost에 저장
 
-        print('Epoch:', '%04d' % (epoch + 1),
+        print('Epoch:', '%04d' % (epoch + 1),   #epoch 1당 평균 cost 값
               'cost =', '{:.9f}'.format(avg_cost))
 
     print("Learning finished")
@@ -74,19 +75,11 @@ with tf.Session(config=config) as sess:
           X: mnist.test.images, Y: mnist.test.labels}))
 
     # Get one and predict
+    #mnist test example 모든 샘플 중 random하게 골라 test
     r = random.randint(0, mnist.test.num_examples - 1)
     print("Label: ", sess.run(tf.argmax(mnist.test.labels[r:r + 1], 1)))
     print("Prediction: ", sess.run(
         tf.argmax(hypothesis, 1), feed_dict={X: mnist.test.images[r:r + 1]}))
-
-    # don't know why this makes Travis Build error.
-    # plt.imshow(
-    #     mnist.test.images[r:r + 1].reshape(28, 28),
-    #     cmap='Greys',
-    #     interpolation='nearest')
-    # plt.show()
-
-
 '''
 Epoch: 0001 cost = 2.868104637
 Epoch: 0002 cost = 1.134684615

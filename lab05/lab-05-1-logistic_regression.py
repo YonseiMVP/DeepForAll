@@ -2,7 +2,7 @@
 import tensorflow as tf
 tf.set_random_seed(777)  # for reproducibility
 use_gpu = False
-# 2개의 feature , 5개의 instance, 차원은 instance x feature = 5 X 2
+# 2개의 feature , 6개의 instance, 차원은 instance x feature = 6 X 2
 x_data = [[1, 2],
           [2, 3],
           [3, 1],
@@ -43,7 +43,7 @@ accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))
 # GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
@@ -53,40 +53,14 @@ with tf.Session(config=config) as sess:
     # sess 그래프 안 변수들(W, b)에 지정한 random_normal distribution에 맞는 값으로 초기화 된다.
     sess.run(tf.global_variables_initializer())
 
+    # 학습 시작
     for step in range(10001):
         cost_val, _ = sess.run([cost, train], feed_dict={X: x_data, Y: y_data})
-        if step % 200 == 0:
+        if step % 200 == 0: # 200회마다 cost값 출력
             print(step, cost_val)
+    # 학습 끝
 
     # Accuracy report
     h, c, a = sess.run([hypothesis, predicted, accuracy],
                        feed_dict={X: x_data, Y: y_data})
     print("\nHypothesis: ", h, "\nCorrect (Y): ", c, "\nAccuracy: ", a)
-
-'''
-0 1.73078
-200 0.571512
-400 0.507414
-600 0.471824
-800 0.447585
-...
-9200 0.159066
-9400 0.15656
-9600 0.154132
-9800 0.151778
-10000 0.149496
-
-Hypothesis:  [[ 0.03074029]
- [ 0.15884677]
- [ 0.30486736]
- [ 0.78138196]
- [ 0.93957496]
- [ 0.98016882]]
-Correct (Y):  [[ 0.]
- [ 0.]
- [ 0.]
- [ 1.]
- [ 1.]
- [ 1.]]
-Accuracy:  1.0
-'''

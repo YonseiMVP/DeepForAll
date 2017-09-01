@@ -47,11 +47,13 @@ step = [
 # mean square error 값을 계산
 RMSE = tf.reduce_mean(tf.square((Y - hypothesis)))
 
-sess = tf.InteractiveSession()
+sess = tf.InteractiveSession()  # interactiveSession은 sess.run이라고 안하고 변수에 바로 a.eval 이런식으로 사용 가능하다.
 init = tf.global_variables_initializer()
 sess.run(init)
 
 for i in range(1000):
     print(i, sess.run([step, RMSE], feed_dict={X: x_data, Y: y_data}))
+    #그래프에 feed_dict로 값을 넣고 step, RMSE 값을 출력하여 하ㅗㄱ인
 
 print(sess.run(hypothesis, feed_dict={X: x_data}))
+# test 값을 넣고 결과 확인

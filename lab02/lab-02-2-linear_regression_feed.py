@@ -26,7 +26,7 @@ train = optimizer.minimize(cost)
 # GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
