@@ -48,7 +48,7 @@
 - MNIST 99% with CNN
 - CNN class, Layers, Ensemble
 ---
-### lab12 - RNN
+### lab12 - [RNN](https://github.com/YonseiMVP/DeepForAll/tree/master/lab12)
 - RNN - Basics
 - RNN - Hi Hello Training
 - Long Sequence RNN
