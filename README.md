@@ -3,6 +3,8 @@
 
 이 저장소는 MVPLab 튜토리얼 자료입니다.
 
+[https://hunkim.github.io/ml/](https://hunkim.github.io/ml/)
+
 ---
 ## 시즌 1 - 딥러닝의 기본 실습 자료
 ---
