@@ -1,7 +1,7 @@
 
 # 2. Linear Regression
 
-### 이 코드들은 TensorFlow로 linear regression의 기본적인 사용 방법을 구현하였습니다.
+이 코드들은 TensorFlow로 linear regression의 기본적인 사용 방법을 구현하였습니다.
 
 ---
 ## 2.1 lab-02-1-linear_regression.py
