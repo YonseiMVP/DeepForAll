@@ -75,23 +75,3 @@ with tf.Session(config=config) as sess:
         result_str = [idx2char[c] for c in np.squeeze(result)]
 
         print(i, "loss:", l, "Prediction:", ''.join(result_str))
-
-
-'''
-0 loss: 2.35377 Prediction: uuuuuuuuuuuuuuu
-1 loss: 2.21383 Prediction: yy you y    you
-2 loss: 2.04317 Prediction: yy yoo       ou
-3 loss: 1.85869 Prediction: yy  ou      uou
-4 loss: 1.65096 Prediction: yy you  a   you
-5 loss: 1.40243 Prediction: yy you yan  you
-6 loss: 1.12986 Prediction: yy you wann you
-7 loss: 0.907699 Prediction: yy you want you
-8 loss: 0.687401 Prediction: yf you want you
-9 loss: 0.508868 Prediction: yf you want you
-10 loss: 0.379423 Prediction: yf you want you
-11 loss: 0.282956 Prediction: if you want you
-12 loss: 0.208561 Prediction: if you want you
-
-...
-
-'''

@@ -75,31 +75,3 @@ with tf.Session(config=config) as sess:
         # print char using dic
         result_str = [idx2char[c] for c in np.squeeze(result)]
         print("\tPrediction str: ", ''.join(result_str))
-
-'''
-0 loss: 1.71584 prediction:  [[2 2 2 3 3 2]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  eeelle
-1 loss: 1.56447 prediction:  [[3 3 3 3 3 3]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  llllll
-2 loss: 1.46284 prediction:  [[3 3 3 3 3 3]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  llllll
-3 loss: 1.38073 prediction:  [[3 3 3 3 3 3]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  llllll
-4 loss: 1.30603 prediction:  [[3 3 3 3 3 3]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  llllll
-5 loss: 1.21498 prediction:  [[3 3 3 3 3 3]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  llllll
-6 loss: 1.1029 prediction:  [[3 0 3 3 3 4]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  lhlllo
-7 loss: 0.982386 prediction:  [[1 0 3 3 3 4]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  ihlllo
-8 loss: 0.871259 prediction:  [[1 0 3 3 3 4]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  ihlllo
-9 loss: 0.774338 prediction:  [[1 0 2 3 3 4]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  ihello
-10 loss: 0.676005 prediction:  [[1 0 2 3 3 4]] true Y:  [[1, 0, 2, 3, 3, 4]]
-	Prediction str:  ihello
-
-...
-
-'''

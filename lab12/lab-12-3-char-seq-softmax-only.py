@@ -67,15 +67,3 @@ with tf.Session(config=config) as sess:
         # print char using dic
         result_str = [idx2char[c] for c in np.squeeze(result)]
         print(i, "loss:", l, "Prediction:", ''.join(result_str))
-
-'''
-0 loss: 2.29513 Prediction: yu yny y y oyny
-1 loss: 2.10156 Prediction: yu ynu y y oynu
-2 loss: 1.92344 Prediction: yu you y u  you
-
-..
-
-2997 loss: 0.277323 Prediction: yf you yant you
-2998 loss: 0.277323 Prediction: yf you yant you
-2999 loss: 0.277323 Prediction: yf you yant you
-'''

@@ -6,7 +6,7 @@ import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 
 tf.set_random_seed(777)  # reproducibility
-use_gpu = True
+use_gpu = False
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 # Check out https://www.tensorflow.org/get_started/mnist/beginners for
@@ -138,7 +138,7 @@ print('Learning Finished!')
 # Test model and check accuracy
 test_size = len(mnist.test.labels)
 predictions = np.zeros(test_size * 10).reshape(test_size, 10)
-for m_idx, m in enumerate(models):
+for m_idx, m in enumerate(models):  # 앙상블 적용(model들의 prediction 확률을 모두 더합니다)
     print(m_idx, 'Accuracy:', m.get_accuracy(
         mnist.test.images, mnist.test.labels))
     p = m.predict(mnist.test.images)
