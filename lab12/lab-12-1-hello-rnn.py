@@ -2,7 +2,7 @@
 import tensorflow as tf
 import numpy as np
 tf.set_random_seed(777)  # reproducibility
-use_gpu = True
+use_gpu = False
 
 idx2char = ['h', 'i', 'e', 'l', 'o']
 # hello의 각 스펠링을 숫자로 정의(one_hot으로 나타냄), 마지막 문자 'o'는 출력에만 해당함

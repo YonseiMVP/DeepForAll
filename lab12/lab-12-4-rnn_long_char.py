@@ -5,7 +5,7 @@ import numpy as np
 from tensorflow.contrib import rnn
 
 tf.set_random_seed(777)  # reproducibility
-use_gpu = True
+use_gpu = False
 
 sentence = ("if you want to build a ship, don't drum up people together to "
             "collect wood and don't assign them tasks and work, but rather "

@@ -14,7 +14,9 @@
 
 #### 실행 결과
 
-<img src="img/lab-12-1.PNG">
+<img src="img/lab-12-1-1.PNG">
+
+<img src="img/lab-12-1-2.PNG">
 
 ## 12.2 lab-12-2-char-seq-rnn.py
 
@@ -30,7 +32,9 @@
 
 #### 실행 결과
 
-<img src="img/lab-12-3.PNG">
+<img src="img/lab-12-3-1.PNG">
+
+<img src="img/lab-12-3-2.PNG">
 
 ## 12.4 lab-12-4-rnn_long_char.py
 
@@ -42,9 +46,9 @@
 
 ## 12.5 lab-12-5-rnn_stock_prediction.py
 
-12-5은 주식 예측관련한 RNN 코드입니다. 이해하기 어려울 수 있습니다.
+Add Later
 
 #### 실행 결과
 
-
+<img src="img/lab-12-5.PNG">
 

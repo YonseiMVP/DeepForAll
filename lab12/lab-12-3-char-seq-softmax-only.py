@@ -2,7 +2,7 @@
 import tensorflow as tf
 import numpy as np
 tf.set_random_seed(777)  # reproducibility
-use_gpu = True
+use_gpu = False
 # 긴 문장에 대해 간편히 설정하기 위해
 sample = " if you want you"
 idx2char = list(set(sample))  # index -> char

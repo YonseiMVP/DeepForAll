@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib
 import os
 tf.set_random_seed(777)  # reproducibility
-use_gpu = True
+use_gpu = False
 
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error

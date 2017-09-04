@@ -2,7 +2,7 @@
 import tensorflow as tf
 import numpy as np
 tf.set_random_seed(777)  # reproducibility
-use_gpu = True
+use_gpu = False
 
 
 sample = " if you want you"
