@@ -74,13 +74,14 @@ sequence_loss = tf.contrib.seq2seq.sequence_loss(
 mean_loss = tf.reduce_mean(sequence_loss)
 # adamoptimizer방법으로 초기화(학습속도 설정)하는 노드 + adamoptimizer방법으로 cost를 최소화하는 노드
 train_op = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(mean_loss)
+# GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # uncomment this line to force CPU
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
-        device_count={'GPU': 1}  # uncomment this line to force CPU
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
     )
 
 sess = tf.Session(config=config)

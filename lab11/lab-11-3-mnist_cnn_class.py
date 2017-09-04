@@ -5,7 +5,7 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
 tf.set_random_seed(777)  # reproducibility
-use_gpu = False
+use_gpu = True
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 # Check out https://www.tensorflow.org/get_started/mnist/beginners for
@@ -17,14 +17,14 @@ training_epochs = 15
 batch_size = 100
 
 
-
+#class 로 network및 함수 만듬
 class Model:
 
     def __init__(self, sess, name):
         self.sess = sess
         self.name = name
         self._build_net()
-
+    # 원하는 network 설정 (기존 network 설정과 동일)
     def _build_net(self):
         with tf.variable_scope(self.name):
             # dropout (keep_prob) rate  0.7~0.5 on training, but should be 1
@@ -118,29 +118,32 @@ class Model:
         correct_prediction = tf.equal(
             tf.argmax(self.logits, 1), tf.argmax(self.Y, 1))
         self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-
+    # 예측값 함수
     def predict(self, x_test, keep_prop=1.0):
         return self.sess.run(self.logits, feed_dict={self.X: x_test, self.keep_prob: keep_prop})
-
+    #정확도 계산 함수
     def get_accuracy(self, x_test, y_test, keep_prop=1.0):
         return self.sess.run(self.accuracy, feed_dict={self.X: x_test, self.Y: y_test, self.keep_prob: keep_prop})
-
+    # 학습 함수 (optimizer,cost등을 sess.run을 하는것)
     def train(self, x_data, y_data, keep_prop=0.7):
         return self.sess.run([self.cost, self.optimizer], feed_dict={
             self.X: x_data, self.Y: y_data, self.keep_prob: keep_prop})
 
-# initialize
+
+# 여기서부터 main이라 생각하면 된다.
+
+# GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # uncomment this line to force CPU
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
-        device_count={'GPU': 1}  # uncomment this line to force CPU
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
     )
 sess = tf.Session(config=config)
 # sess = tf.Session()
-m1 = Model(sess, "m1")
+m1 = Model(sess, "m1")  #Model class를 m1으로 선언
 
 sess.run(tf.global_variables_initializer())
 
@@ -153,7 +156,7 @@ for epoch in range(training_epochs):
 
     for i in range(total_batch):
         batch_xs, batch_ys = mnist.train.next_batch(batch_size)
-        c, _ = m1.train(batch_xs, batch_ys)
+        c, _ = m1.train(batch_xs, batch_ys) #Model 안의 train메서드를 사용
         avg_cost += c / total_batch
 
     print('Epoch:', '%04d' % (epoch + 1), 'cost =', '{:.9f}'.format(avg_cost))
@@ -162,3 +165,4 @@ print('Learning Finished!')
 
 # Test model and check accuracy
 print('Accuracy:', m1.get_accuracy(mnist.test.images, mnist.test.labels))
+# Model class 안의 get_accuracy 메서드 사용, return으로 accuracy가 돌아온다

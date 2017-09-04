@@ -48,13 +48,14 @@ loss = tf.reduce_mean(sequence_loss)  # mean all sequence loss
 train = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 
 prediction = tf.argmax(outputs, axis=2)
+# GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # uncomment this line to force CPU
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
-        device_count={'GPU': 1}  # uncomment this line to force CPU
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
     )
 
 with tf.Session(config=config) as sess:

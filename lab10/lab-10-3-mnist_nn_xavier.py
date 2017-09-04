@@ -73,9 +73,11 @@ for epoch in range(training_epochs):
 print('Learning Finished!')
 
 # Test model and check accuracy
-correct_prediction = tf.equal(tf.argmax(hypothesis, 1), tf.argmax(Y, 1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-print('Accuracy:', sess.run(accuracy, feed_dict={
+correct_prediction = tf.equal(tf.argmax(hypothesis, 1), tf.argmax(Y, 1))    #tf.equal -> return 1 or 0
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))  #tf.cast -> 1, 0 -> return True, False
+# Test model 노드 설정 끝
+
+print('Accuracy:', sess.run(accuracy, feed_dict={   #sess.run을 통해 accuracy 실행
       X: mnist.test.images, Y: mnist.test.labels}))
 
 # Get one and predict
@@ -84,6 +86,7 @@ print("Label: ", sess.run(tf.argmax(mnist.test.labels[r:r + 1], 1)))
 print("Prediction: ", sess.run(
     tf.argmax(hypothesis, 1), feed_dict={X: mnist.test.images[r:r + 1]}))
 
+# 아래는 이미지 확인하는 방법! OpenCV를 사용하는 방법도 있다.
 # plt.imshow(mnist.test.images[r:r + 1].
 #           reshape(28, 28), cmap='Greys', interpolation='nearest')
 # plt.show()

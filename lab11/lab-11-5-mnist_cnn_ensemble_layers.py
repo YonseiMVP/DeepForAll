@@ -6,7 +6,7 @@ import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 
 tf.set_random_seed(777)  # reproducibility
-use_gpu = False
+use_gpu = True
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 # Check out https://www.tensorflow.org/get_started/mnist/beginners for
@@ -17,7 +17,7 @@ learning_rate = 0.001
 training_epochs = 20
 batch_size = 100
 
-
+#class 로 network및 함수 만듬
 class Model:
 
     def __init__(self, sess, name):
@@ -25,6 +25,7 @@ class Model:
         self.name = name
         self._build_net()
 
+    # 원하는 network 설정 (기존 network 설정과 동일)
     def _build_net(self):
         with tf.variable_scope(self.name):
             # dropout (keep_prob) rate  0.7~0.5 on training, but should be 1
@@ -82,28 +83,30 @@ class Model:
         correct_prediction = tf.equal(
             tf.argmax(self.logits, 1), tf.argmax(self.Y, 1))
         self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-
+    # 예측값 함수
     def predict(self, x_test, training=False):
         return self.sess.run(self.logits,
                              feed_dict={self.X: x_test, self.training: training})
 
+    # 정확도 계산 함수
     def get_accuracy(self, x_test, y_test, training=False):
         return self.sess.run(self.accuracy,
                              feed_dict={self.X: x_test,
                                         self.Y: y_test, self.training: training})
 
+    # 학습 함수 (optimizer,cost등을 sess.run을 하는것)
     def train(self, x_data, y_data, training=True):
         return self.sess.run([self.cost, self.optimizer], feed_dict={
             self.X: x_data, self.Y: y_data, self.training: training})
 
-# initialize
+# GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # uncomment this line to force CPU
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
-        device_count={'GPU': 1}  # uncomment this line to force CPU
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
     )
 sess = tf.Session(config=config)
 

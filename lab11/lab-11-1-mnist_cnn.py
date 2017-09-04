@@ -6,28 +6,31 @@ import random
 from tensorflow.examples.tutorials.mnist import input_data
 
 tf.set_random_seed(777)  # reproducibility
-use_gpu = False
+use_gpu = True
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 # Check out https://www.tensorflow.org/get_started/mnist/beginners for
 # more information about the mnist dataset
 
-# hyper parameters
+# parameters 설정
 learning_rate = 0.001
 training_epochs = 15
 batch_size = 100
 
-# input place holders
+# mnist input 값을 넣기 위한 공간  28 * 28 = 784
 X = tf.placeholder(tf.float32, [None, 784])
-X_img = tf.reshape(X, [-1, 28, 28, 1])   # img 28x28x1 (black/white)
+# CNN을 하기 위해 input모양을 image로 재 정렬 784-> Nx28x28x1 (흑백)
+X_img = tf.reshape(X, [-1, 28, 28, 1])
 Y = tf.placeholder(tf.float32, [None, 10])
 
-# L1 ImgIn shape=(?, 28, 28, 1)
+# 변수선언(초기화 방법(차원), normal distribution의 표준편차)
+# conv->relu->pooling 순으로 함
 W1 = tf.Variable(tf.random_normal([3, 3, 1, 32], stddev=0.01))
 #    Conv     -> (?, 28, 28, 32)
 #    Pool     -> (?, 14, 14, 32)
 L1 = tf.nn.conv2d(X_img, W1, strides=[1, 1, 1, 1], padding='SAME')
 L1 = tf.nn.relu(L1)
+# max_pooling 2x2에서 가장 큰 값을 택하고 2만큼 이동 => non-overlapping maxpooling
 L1 = tf.nn.max_pool(L1, ksize=[1, 2, 2, 1],
                     strides=[1, 2, 2, 1], padding='SAME')
 '''
@@ -44,6 +47,7 @@ L2 = tf.nn.conv2d(L1, W2, strides=[1, 1, 1, 1], padding='SAME')
 L2 = tf.nn.relu(L2)
 L2 = tf.nn.max_pool(L2, ksize=[1, 2, 2, 1],
                     strides=[1, 2, 2, 1], padding='SAME')
+# FC layer를 위해 이미지 형태의 data를 다시 일렬로 나열
 L2_flat = tf.reshape(L2, [-1, 7 * 7 * 64])
 '''
 Tensor("Conv2D_1:0", shape=(?, 14, 14, 64), dtype=float32)
@@ -56,21 +60,24 @@ Tensor("Reshape_1:0", shape=(?, 3136), dtype=float32)
 W3 = tf.get_variable("W3", shape=[7 * 7 * 64, 10],
                      initializer=tf.contrib.layers.xavier_initializer())
 b = tf.Variable(tf.random_normal([10]))
+#logits 식 정의 노드
 logits = tf.matmul(L2_flat, W3) + b
 
-# define cost/loss & optimizer
+# softmax+cross entropy error 노드
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
     logits=logits, labels=Y))
+
+# adamoptimizer방법으로 초기화(학습속도 설정)하는 노드 + adamoptimizer방법으로 cost를 최소화하는 노드
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
-# initialize
+# GPU 사용 여부
 if use_gpu == False:
     config = tf.ConfigProto(
-    device_count={'GPU': 0} # uncomment this line to force CPU
+        device_count={'GPU': 0} # GPU : 0이면 사용할 GPU 0개 -> CPU 사용
     )
 elif use_gpu == True:
     config = tf.ConfigProto(
-        device_count={'GPU': 1}  # uncomment this line to force CPU
+        device_count={'GPU': 1}  # GPU : 1이면 사용할 GPU 1개 -> GPU 사용
     )
 sess = tf.Session(config=config)
 sess.run(tf.global_variables_initializer())
@@ -106,23 +113,3 @@ print("Prediction: ", sess.run(
 # plt.imshow(mnist.test.images[r:r + 1].
 #           reshape(28, 28), cmap='Greys', interpolation='nearest')
 # plt.show()
-
-'''
-Epoch: 0001 cost = 0.340291267
-Epoch: 0002 cost = 0.090731326
-Epoch: 0003 cost = 0.064477619
-Epoch: 0004 cost = 0.050683064
-Epoch: 0005 cost = 0.041864835
-Epoch: 0006 cost = 0.035760704
-Epoch: 0007 cost = 0.030572132
-Epoch: 0008 cost = 0.026207981
-Epoch: 0009 cost = 0.022622454
-Epoch: 0010 cost = 0.019055919
-Epoch: 0011 cost = 0.017758641
-Epoch: 0012 cost = 0.014156652
-Epoch: 0013 cost = 0.012397016
-Epoch: 0014 cost = 0.010693789
-Epoch: 0015 cost = 0.009469977
-Learning Finished!
-Accuracy: 0.9885
-'''

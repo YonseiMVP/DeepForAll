@@ -80,22 +80,3 @@ with tf.Session(config=config) as sess:
     print("Label: ", sess.run(tf.argmax(mnist.test.labels[r:r + 1], 1)))
     print("Prediction: ", sess.run(
         tf.argmax(hypothesis, 1), feed_dict={X: mnist.test.images[r:r + 1]}))
-'''
-Epoch: 0001 cost = 2.868104637
-Epoch: 0002 cost = 1.134684615
-Epoch: 0003 cost = 0.908220728
-Epoch: 0004 cost = 0.794199896
-Epoch: 0005 cost = 0.721815854
-Epoch: 0006 cost = 0.670184430
-Epoch: 0007 cost = 0.630576546
-Epoch: 0008 cost = 0.598888191
-Epoch: 0009 cost = 0.573027079
-Epoch: 0010 cost = 0.550497213
-Epoch: 0011 cost = 0.532001859
-Epoch: 0012 cost = 0.515517795
-Epoch: 0013 cost = 0.501175288
-Epoch: 0014 cost = 0.488425370
-Epoch: 0015 cost = 0.476968593
-Learning finished
-Accuracy:  0.888
-'''
