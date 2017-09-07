@@ -25,7 +25,7 @@
 ### lab05 - [Logistic (regression) classifier](https://github.com/YonseiMVP/DeepForAll/tree/master/lab05)
 - TensorFlow로 Logistic Classification 구현하기
 ---
-### lab06 - [Multi-variable linear regression](https://github.com/YonseiMVP/DeepForAll/tree/master/lab06)
+### lab06 - [Softmax Classifier](https://github.com/YonseiMVP/DeepForAll/tree/master/lab06)
 - TensorFlow로 Softmax Classification 구현하기
 - TensorFlow로 Fancy Softmax Classification 구현하기
 ---

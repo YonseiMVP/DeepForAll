@@ -1,5 +1,5 @@
 
-# 6. Multi-variable linear regression
+# 6. Softmax Classifier
 
 lab06 실습 코드들은 arg_max와 softmax함수의 사용법에대하여 설명하고 있다.
 
